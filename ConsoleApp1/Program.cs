@@ -6,10 +6,163 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            ConverterDaysOfWeek();
-            ArraySorting();
-            CowsOfNumber();
+            // ConverterDaysOfWeek();
+            // ArraySorting();
+            // CowsOfNumber();
+            // SearchTheGame();
+            Console.CursorVisible = false;
+            char[,] map =
+            {
+                { '#','#','#','#','#','#','#','#','#','#','#','#','#','#','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#' },
+                { '#','#','#','#','#','#','#','#','#','#','#','#','#','#','#' }
+            };
 
+            int userX = 6, userY = 6;
+            char[] bag = new char[1];
+            Console.SetCursorPosition(0,20);
+            Console.Write("Сумка: ");
+            for (int i = 0; i < bag.Length; i++)
+            {
+                Console.Write(bag[i] + " ");
+            }
+            while (true)
+            {
+                Console.SetCursorPosition(0, 0);
+                for (int i = 0; i < map.GetLength(0); i++)
+                {
+                    for (int j = 0; j < map.GetLength(1); j++)
+                    {
+                        Console.Write(map[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+                Console.SetCursorPosition(userY, userX);
+                Console.Write('@');
+                ConsoleKeyInfo charKey = Console.ReadKey();
+                switch (charKey.Key)
+                {
+                    case ConsoleKey.W:
+                        if (map[userX - 1, userY] != '#')
+                        {
+                            userX--;
+                        }
+                        break;
+                    case ConsoleKey.S:
+                        if (map[userX + 1, userY] != '#')
+                        {
+                            userX++;
+                        }
+                        break;
+                    case ConsoleKey.A:
+                        if (map[userX, userY - 1] != '#')
+                        {
+                            userY--;
+                        }
+                        break;
+                    case ConsoleKey.D:
+                        if (map[userX, userY + 1] != '#')
+                        {
+                            userY++;
+                        }
+                        break;
+
+                }
+
+                if (map[userX, userY] == 'X')
+                {
+                    map[userX, userY] = 'O';
+                }
+                char[] tempBag = new char[bag.Length + 1];
+                for (int i = 0; i < bag.Length; i++) 
+                {
+                    tempBag[i] = bag[i];
+                }
+                tempBag[tempBag.Length - 1] = 'X';
+                bag = tempBag;
+                Console.Clear();
+            }
+        }
+
+        private static void SearchTheGame()
+        {
+            bool IsOpen = true;
+            string[,] games =
+                {
+            { "Conter Strike 2", "Valorant", "Battlefield" },
+            { "GTA V", "Far Cry 3", "Watch Dogs 2" },
+            { "Hitman 3", "Assasin's Creed: Unity", "The Last of Us" },
+            };
+            while (IsOpen)
+            {
+                Console.WriteLine("\n Список игр в библиотеке Steam:\n");
+                for (int i = 0; i < games.GetLength(0); i++)
+                {
+                    for (int j = 0; j < games.GetLength(1); j++)
+                    {
+                        Console.Write($" {games[i, j]} | ");
+                    }
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine(" Библиотека");
+                Console.WriteLine("\n 1 - узнать название игры по индексу.\n \n 2 - найти игру по названию.\n \n 3 - выход.\n");
+                Console.Write("\nВыберите пункт меню: ");
+                switch (Convert.ToInt32(Console.ReadLine()))
+                {
+                    case 1:
+                        int line, columbn;
+                        Console.Write("Введите номер строки: ");
+                        line = Convert.ToInt32(Console.ReadLine()) - 1;
+                        Console.Write("Введите номер стобца: ");
+                        columbn = Convert.ToInt32(Console.ReadLine()) - 1;
+                        Console.WriteLine($"Это игра {games[line, columbn]} ");
+                        break;
+                    case 2:
+                        string game;
+                        bool gameIsFound = false;
+                        Console.Write("Введите игру: ");
+                        game = Console.ReadLine();
+                        for (int i = 0; i < games.GetLength(0); i++)
+                        {
+                            for (int j = 0; j < games.GetLength(1); j++)
+                            {
+                                if (game.ToLower() == games[i, j].ToLower())
+                                {
+                                    Console.Write($"Игра {games[i, j]} находится по адресу: строка {i + 1}, столбец {j + 1}.");
+                                    gameIsFound = true;
+                                }
+                            }
+
+                        }
+                        if (gameIsFound == false)
+                            Console.WriteLine("игра не найдена...");
+                        break;
+
+                    case 3:
+                        IsOpen = false;
+                        break;
+                    default:
+                        Console.WriteLine("Введена неверная команда");
+                        break;
+                }
+                if (IsOpen)
+                {
+                    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                }
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
 
         private static void CowsOfNumber()
@@ -31,10 +184,6 @@ namespace ConsoleApp1
                 else if (LastNumber >= 2 && LastNumber <= 4)
                 {
                     Console.WriteLine($"Вы купили {NumberOfCows} коровы");
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка");
                 }
             }
         }
@@ -104,8 +253,10 @@ namespace ConsoleApp1
                 case 7:
                     DayName = "Восскресенье";
                     break;
+                default:
+                    Console.WriteLine("Введено неверное значение");
+                    break;
             }
-
             return DayName;
         }
 
@@ -129,7 +280,8 @@ namespace ConsoleApp1
 
                 }
             }
-
+            Console.ReadKey();
+            Console.Clear();
             return DayOfWeek;
         }
     }
